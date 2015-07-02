@@ -7,9 +7,12 @@ def spawn():
     pass
 
 @spawn.command()
-def simple():
+@click.option('--name')
+def simple(name):
     import pdb; pdb.set_trace()
-    cookiecutter('{0}/cookiecutters/simple/'.format(os.path.dirname(os.path.abspath(__file__))))
+    cookiecutter('{0}/cookiecutters/simple/'.format(os.path.dirname(os.path.abspath(__file__))),
+                 no_input=True,
+                 extra_context={'repo_name': '{0}'.format(name)})
 
 @spawn.command()
 def large():
