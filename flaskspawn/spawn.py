@@ -1,16 +1,20 @@
+from cookiecutter.main import cookiecutter
 import click
 import os
-from cookiecutter.main import cookiecutter
 
 @click.group()
 def spawn():
     pass
 
 @spawn.command()
-@click.option('--name')
-def simple(name):
-    import pdb; pdb.set_trace()
-    cookiecutter('{0}/cookiecutters/simple/'.format(os.path.dirname(os.path.abspath(__file__))),
+@click.option('-n', '--name', prompt='Project name')
+@click.option('-t', '--type', type=click.Choice(['simple-frontend', 'simple-api']), default='simple-frontend')
+def new(name, type):
+
+    if type == 'simple-frontend':
+        cookiecutter_path = '{0}/cookiecutters/simple-frontend/'.format(os.path.dirname(os.path.abspath(__file__)))
+
+    cookiecutter(cookiecutter_path,
                  no_input=True,
                  extra_context={'repo_name': '{0}'.format(name)})
 
