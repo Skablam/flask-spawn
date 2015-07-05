@@ -4,6 +4,12 @@ Generate new flask applications quickly and easily, in a variety of customisable
 
 ## Quickstart
 
+To begin:
+
+```
+  pip install flask-spawn
+```
+
 To create a new flask application use the following command:
 
 ```
@@ -30,7 +36,7 @@ nameofapp
 └── README.md
 ```
 
-Then install python libraries with (it is recommnded that you do this inside a virtualenv):
+Then install python libraries (it is recommnded that you do this inside a virtualenv):
 
 ```
 pip install -r requirements.txt
@@ -45,5 +51,3 @@ The basic unit test structure has also been setup. Run the tests:
 ```
 source test.sh
 ```
-
-## Customising the structure
