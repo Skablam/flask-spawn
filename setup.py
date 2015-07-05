@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='flask-spawn',
-      version='0.1.1',
+      version='0.1.2',
       install_requires=[
             'Click==3.3',
             'Cookiecutter',
