@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(name='flask-spawn',
       version='0.1',
       install_requires=[
-            'Click',
+            'Click==3.3',
             'Cookiecutter',
         ],
       description='Generate new flask projects quickly and easily, in a variety of customisable structures.',
