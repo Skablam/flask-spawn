@@ -1,5 +1,5 @@
 from cookiecutter.main import cookiecutter
-from snippets.snippets import add_database_files
+from .snippets.snippets import add_database_files
 import click
 import os
 
@@ -11,8 +11,9 @@ def spawn():
 @click.option('-t', '--type', type=click.Choice(['simple-frontend', 'simple-api']), default='simple-frontend')
 @click.option('-d', '--database', is_flag=True, help="use if you want to add code for database migrations")
 @click.option('-b', '--blueprint', multiple=True)
+@click.option('-v', '--view', multiple=True)
 @click.argument('appname', required=True)
-def new(appname, type, database, blueprint):
+def new(appname, type, database, blueprint, view):
     base_directory = os.path.dirname(os.path.abspath(__file__))
 
     if type == 'simple-frontend':
@@ -27,3 +28,6 @@ def new(appname, type, database, blueprint):
 
     if blueprint:
         click.echo('\n'.join(blueprint))
+
+    if view:
+        click.echo('\n'.join(view))
