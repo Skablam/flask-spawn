@@ -20,20 +20,25 @@ This will create an application with the following structure:
 
 ```
 nameofapp
+├── README.md
 ├── application
 │   ├── __init__.py
-│   └── routes.py
-├── templates
-│   └── base.html
-└── tests
-│   ├── __init__.py
-│   └── test_app.py
+│   ├── routes.py
+│   ├── static
+│   │   ├── css
+│   │   │   └── base.css
+│   │   ├── images
+│   │   └── js
+│   └── templates
+│       └── base.html
+├── tests
+│    ├── __init__.py
+│    └── test_app.py
 ├── config.py
 ├── requirements.txt
 ├── run.py
 ├── run.sh
-├── test.sh
-└── README.md
+└── test.sh
 ```
 
 Then install python libraries (it is recommnded that you do this inside a virtualenv):

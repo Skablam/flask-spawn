@@ -1,5 +1,5 @@
 from cookiecutter.main import cookiecutter
-from .snippets.snippets import add_database_files
+from .snippets.snippets import add_database_files, render_snippets
 import click
 import os
 
@@ -31,3 +31,5 @@ def new(appname, type, database, blueprint, view):
 
     if view:
         click.echo('\n'.join(view))
+
+    render_snippets(appname)
