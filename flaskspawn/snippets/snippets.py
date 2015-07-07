@@ -14,7 +14,7 @@ def add_database_files(appname, base_directory):
     add_config({"SQLALCHEMY_DATABASE_URI":'""'}, appname)
     #Update application/__init__.py
     import_directory = appname + '/application/__init__.py'
-    add_import({import_directory:"from flask.ext.sqlalchemy import SQLAlchemy"})
+    add_import({import_directory:"from flask.ext.sqlalchemy import SQLAlchemy\n"})
     append_to_file(appname + '/application/__init__.py', database_directory + 'application/__init__.py')
 
 def add_blueprints():
