@@ -1,6 +1,8 @@
 from shutil import copyfile
+from distutils.dir_util import copy_tree
 import re
 import jinja2
+import os
 
 template_list = []
 
@@ -17,8 +19,34 @@ def add_database_files(appname, base_directory):
     add_import({import_directory:"from flask.ext.sqlalchemy import SQLAlchemy\n"})
     append_to_file(appname + '/application/__init__.py', database_directory + 'application/__init__.py')
 
-def add_blueprints():
-    pass #TODO
+def add_route(appname, routename, base_directory, template_folder):
+    templateLoader = jinja2.FileSystemLoader(searchpath=base_directory + '/' + template_folder)
+    templateEnv = jinja2.Environment(loader=templateLoader)
+
+    jinja_template = templateEnv.get_template('application/routes.py')
+    f = open(appname + '/application/routes.py','a')
+    f.write("\n" + jinja_template.render(routename=routename) + "\n")
+    f.close
+
+def add_template(appname, templatename, base_directory):
+    templateLoader = jinja2.FileSystemLoader(searchpath=base_directory + '/snippets/template')
+    templateEnv = jinja2.Environment(loader=templateLoader)
+
+    jinja_template = templateEnv.get_template('application/templates/sample_template.html')
+    f = open(appname + '/application/templates/' + templatename + '.html','w')
+    f.write("\n" + jinja_template.render(templatename=templatename) + "\n")
+    f.close
+
+def add_view(appname, viewname, base_directory):
+    add_route(appname, viewname, base_directory, 'snippets/view')
+    add_template(appname, viewname, base_directory)
+    add_import({appname + "/application/routes.py":"from flask import render_template\n"})
+
+def add_blueprint(appname, blueprintname, base_directory):
+    pass
+    #TODO
+    #os.makedirs(appname + 'application/' + blueprintname)
+    #copy_tree(base_directory + 'snippets/blueprint', appname + 'application/' + blueprintname)
 
 def copy_contents_of_file(source_file, destination_file):
     with open(source_file) as f:
@@ -65,7 +93,6 @@ def render_snippets(appname):
 
     for template in template_list:
         jinja_template = templateEnv.get_template(template["name"])
-        import pdb; pdb.set_trace()
         f = open(appname + "/" + template["name"],'w')
         f.write(jinja_template.render(template["values"]))
         f.close
@@ -80,7 +107,8 @@ def add_config(config, appname):
 
 def add_import(imports):
     for key in imports:
-        add_text_to_top_of_file(key, imports[key])
+        if not imports[key] in open(key).read():
+            add_text_to_top_of_file(key, imports[key])
 
 def add_to_requirements(source_requirements, destination_requirements):
     #TODO Need to make sure that requirements are not duplicated

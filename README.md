@@ -7,13 +7,13 @@ Generate new flask applications quickly and easily, in a variety of customisable
 To begin:
 
 ```
-  pip install flask-spawn
+pip install flask-spawn
 ```
 
 To create a new flask application use the following command:
 
 ```
-  spawn new nameofapp
+spawn new nameofapp
 ```
 
 This will create an application with the following structure:
@@ -64,7 +64,7 @@ source test.sh
 The -d or --database option adds the files and code necessary to do alembic migrations via flask-migrate.
 
 ```
-  spawn new anotherapp -d
+spawn new anotherapp -d
 ```
 This would create a new flask application called anotherapp with the same structure as seen in the Quickstart section above but with a manage.py and a models.py as well as the necessary config, imports and  requirements.
 
