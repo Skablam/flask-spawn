@@ -1,3 +1,3 @@
 @app.route("/{{ routename }}")
 def {{ routename }}():
-    render_template("{{ routename }}.html")
+    return render_template("{{ routename }}.html")

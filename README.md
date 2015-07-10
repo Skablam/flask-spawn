@@ -75,3 +75,45 @@ python manage.py db init
 python manage.py db migrate
 python manage.py db upgrade
 ```
+
+### Add Views
+
+The -v or --view option allows the quick addition of views, by view it means a
+a route that displays a templates. So with the option a new route is added that renders a new template.
+
+```
+spawn new anotherapp -v hello
+```
+This above command creates an app called anotherapp and adds a route /hello that renders a template called hello.html.
+
+This option can be used multiple times to create many views:
+```
+spawn new anotherapp -v hello -v login -v logout
+```
+
+### Add Routes
+
+If you are building an api then you don't want to render a template, so option
+-r or --route adds a route that returns a string.
+```
+spawn new anotherapp -r goodbye
+```
+The above command creates an app called anotherapp and adds a route /goodbye.
+
+This option can be used multiple times to create many routes:
+```
+spawn new anotherapp -r goodbye -r ciao -r adios
+```
+
+### Add Templates
+
+The option -t or --template adds a template to the templates folder.
+```
+spawn new anotherapp -t hithere
+```
+The above commands adds a template called hithere.html.
+
+This option can also be used multiple times:
+```
+spawn new anotherapp -t hithere -t how -t are -t you
+```

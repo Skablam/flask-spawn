@@ -1,16 +1,14 @@
-{% raw %}
 <!DOCTYPE html>
 <html lang="en-GB">
   <head>
     <title>{{cookiecutter.repo_name}}</title>
     <meta charset="utf-8">
     <link href="../static/css/base.css" rel="stylesheet">
-    {% block head %}{% endblock %}
+    {% raw %}{% block head %}{% endblock %}{% endraw %}
   </head>
   <body>
-    {% block content %}{% endblock %}
+    {% raw %}{% block content %}{% endblock %}{% endraw %}
   </body>
 
-  {% block extra_js %}{% endblock %}
+  {% raw %}{% block extra_js %}{% endblock %}{% endraw %}
 </html>
-{% endraw %}
