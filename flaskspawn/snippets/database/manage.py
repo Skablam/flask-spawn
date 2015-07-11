@@ -1,7 +1,8 @@
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 from application.models import *
-from application.routes import app, db
+from application.routes import app
+from application import db
 import os
 
 app.config.from_object(os.environ.get('SETTINGS'))

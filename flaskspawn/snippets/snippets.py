@@ -23,7 +23,7 @@ def add_route(appname, routename, base_directory, template_folder):
     templateLoader = jinja2.FileSystemLoader(searchpath=base_directory + '/' + template_folder)
     templateEnv = jinja2.Environment(loader=templateLoader)
 
-    jinja_template = templateEnv.get_template('application/routes.py')
+    jinja_template = templateEnv.get_template('application/routes.py.j2')
     f = open(appname + '/application/routes.py','a')
     f.write("\n" + jinja_template.render(routename=routename) + "\n")
     f.close
