@@ -9,27 +9,26 @@ def spawn():
     pass
 
 @spawn.command()
-@click.option('-ty', '--type', type=click.Choice(['simple-frontend', 'simple-api']), default='simple-frontend')
+@click.option('-s', '--size', type=click.Choice(['small', 'medium', 'large']), default='small')
 @click.option('-d', '--database', is_flag=True, help="use to add code/files for database migrations")
 @click.option('-b', '--blueprint', multiple=True)
 @click.option('-r', '--route', multiple=True)
 @click.option('-t', '--template', multiple=True)
 @click.option('-v', '--view', multiple=True)
+@click.option('-a', '--api', is_flag=True, help="Use if you are building an api. It removes the templates folder")
 @click.argument('appname', required=True)
-def new(appname, type, database, blueprint, route, template, view):
+def new(appname, size, database, blueprint, route, template, view, api):
     base_directory = os.path.dirname(os.path.abspath(__file__))
 
-    if type == 'simple-frontend':
-        cookiecutter_path = '{0}/cookiecutters/simple-frontend/'.format(base_directory)
-    elif type == 'simple-api':
-        cookiecutter_path = '{0}/cookiecutters/simple-frontend/'.format(base_directory)
+    if size == 'small':
+        cookiecutter_path = '{0}/cookiecutters/small/'.format(base_directory)
 
     cookiecutter(cookiecutter_path,
                  no_input=True,
                  extra_context={'repo_name': '{0}'.format(appname)})
 
     #Need to remove templates folder as not needed in api app
-    if type == 'simple-api':
+    if api:
         remove_tree(appname + '/application/templates')
 
     if database:
