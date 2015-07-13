@@ -23,8 +23,8 @@ def add_route(appname, routename, base_directory, template_folder):
     templateLoader = jinja2.FileSystemLoader(searchpath=base_directory + '/' + template_folder)
     templateEnv = jinja2.Environment(loader=templateLoader)
 
-    jinja_template = templateEnv.get_template('application/routes.py.j2')
-    f = open(appname + '/application/routes.py','a')
+    jinja_template = templateEnv.get_template('application/views.py.j2')
+    f = open(appname + '/application/views.py','a')
     f.write("\n" + jinja_template.render(routename=routename) + "\n")
     f.close
 
@@ -40,13 +40,30 @@ def add_template(appname, templatename, base_directory):
 def add_view(appname, viewname, base_directory):
     add_route(appname, viewname, base_directory, 'snippets/view')
     add_template(appname, viewname, base_directory)
-    add_import({appname + "/application/routes.py":"from flask import render_template\n"})
+    add_import({appname + "/application/views.py":"from flask import render_template\n"})
 
-def add_blueprint(appname, blueprintname, base_directory):
-    pass
-    #TODO
+def add_blueprint(appname, blueprintname, base_directory, size):
+    if size == "small":
+        add_blueprint_small(appname, blueprintname, base_directory)
     #os.makedirs(appname + 'application/' + blueprintname)
     #copy_tree(base_directory + 'snippets/blueprint', appname + 'application/' + blueprintname)
+
+def add_blueprint_small(appname, blueprintname, base_directory):
+    add_blueprint_file(appname, blueprintname, base_directory)
+    add_template(appname, blueprintname + 'main', base_directory)
+
+def add_blueprint_file(appname, blueprintname, base_directory):
+    templateLoader = jinja2.FileSystemLoader(searchpath=base_directory + '/snippets/blueprint - small')
+    templateEnv = jinja2.Environment(loader=templateLoader)
+
+    jinja_template = templateEnv.get_template('application/blueprint.py.j2')
+    f = open(appname + '/application/' + blueprintname + '.py','w')
+    f.write("\n" + jinja_template.render(blueprintname=blueprintname) + "\n")
+    f.close
+
+    import_directory = appname + '/application/__init__.py'
+    add_import({import_directory:"from " + blueprintname + " import " + blueprintname + "\n"})
+    append_to_file(appname + '/application/__init__.py', base_directory + '' + '/snippets/blueprint - small/application/__init__.py')
 
 def copy_contents_of_file(source_file, destination_file):
     with open(source_file) as f:

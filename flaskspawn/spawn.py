@@ -12,12 +12,12 @@ def spawn():
 @click.option('-s', '--size', type=click.Choice(['small', 'medium', 'large']), default='small')
 @click.option('-d', '--database', is_flag=True, help="use to add code/files for database migrations")
 @click.option('-b', '--blueprint', multiple=True)
-@click.option('-r', '--route', multiple=True)
+@click.option('-dv', '--dataview', multiple=True, help="use to add a view that returns a Response rather than a template")
 @click.option('-t', '--template', multiple=True)
 @click.option('-v', '--view', multiple=True)
 @click.option('-a', '--api', is_flag=True, help="Use if you are building an api. It removes the templates folder")
 @click.argument('appname', required=True)
-def new(appname, size, database, blueprint, route, template, view, api):
+def new(appname, size, database, blueprint, dataview, template, view, api):
     base_directory = os.path.dirname(os.path.abspath(__file__))
 
     if size == 'small':
@@ -36,11 +36,11 @@ def new(appname, size, database, blueprint, route, template, view, api):
 
     if blueprint:
         for blueprintname in blueprint:
-            add_blueprint(appname, blueprintname, base_directory)
+            add_blueprint(appname, blueprintname, base_directory, size)
 
-    if route:
-        for routename in route:
-            add_route(appname, routename, base_directory, 'snippets/route')
+    if dataview:
+        for dataviewname in dataview:
+            add_route(appname, dataviewname, base_directory, 'snippets/dataview')
 
     if template:
         for templatename in template:
