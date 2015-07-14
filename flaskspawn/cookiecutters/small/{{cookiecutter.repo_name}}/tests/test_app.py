@@ -1,4 +1,4 @@
-from application.routes import app
+from application.views import app
 import unittest
 import os
 
