@@ -1,8 +1,8 @@
 from shutil import copyfile
 from distutils.dir_util import copy_tree
-import re
 import jinja2
 import os
+from .file_routines import append_to_file, append_text_to_file, add_text_to_file_after_pattern, copy_contents_of_file, add_text_to_top_of_file
 
 template_list = []
 
@@ -28,6 +28,11 @@ def add_route(appname, routename, base_directory, template_folder):
     f.write("\n" + jinja_template.render(routename=routename) + "\n")
     f.close
 
+def add_dataview(appname, dataviewname, base_directory, template_folder):
+    add_import({appname + '/application/views.py':"from flask import Response\n"})
+    add_route(appname, dataviewname, base_directory, template_folder)
+    add_test(appname, base_directory, dataviewname, dataviewname, '200 OK')
+
 def add_template(appname, templatename, base_directory):
     templateLoader = jinja2.FileSystemLoader(searchpath=base_directory + '/snippets/template')
     templateEnv = jinja2.Environment(loader=templateLoader)
@@ -41,6 +46,7 @@ def add_view(appname, viewname, base_directory):
     add_route(appname, viewname, base_directory, 'snippets/view')
     add_template(appname, viewname, base_directory)
     add_import({appname + "/application/views.py":"from flask import render_template\n"})
+    add_test(appname, base_directory, viewname, viewname, '200 OK')
 
 def add_blueprint(appname, blueprintname, base_directory, size):
     if size == "small":
@@ -51,7 +57,7 @@ def add_blueprint(appname, blueprintname, base_directory, size):
 def add_blueprint_small(appname, blueprintname, base_directory):
     add_blueprint_file(appname, blueprintname, base_directory)
     add_template(appname, blueprintname + 'main', base_directory)
-    add_test(appname, base_directory, blueprintname, blueprintname)
+    add_test(appname, base_directory, blueprintname, blueprintname, '301 MOVED PERMANENTLY')
 
 def add_blueprint_file(appname, blueprintname, base_directory):
     templateLoader = jinja2.FileSystemLoader(searchpath=base_directory + '/snippets/blueprint - small')
@@ -68,49 +74,6 @@ def add_blueprint_file(appname, blueprintname, base_directory):
     jinja_template = templateEnv.get_template('application/__init__.py')
     rendered_text = jinja_template.render(blueprintname=blueprintname) + '\n'
     append_text_to_file(appname + '/application/__init__.py', rendered_text)
-
-def copy_contents_of_file(source_file, destination_file):
-    with open(source_file) as f:
-        source_contents = f.read()
-
-    with open(destination_file, "w") as f:
-        f.write(source_contents)
-
-def append_to_file(file_path, source_file):
-    with open(source_file) as f:
-        source_contents = f.read()
-
-    with open(file_path, "a") as f:
-        f.write(source_contents)
-
-def append_text_to_file(file_path, source_text):
-    with open(file_path, "a") as f:
-        f.write(source_text)
-
-def add_text_to_file_after_pattern(text, pattern, destination_file):
-    with open(destination_file, 'r+') as f:
-        contents = f.readlines()
-        line_index = None
-        for idx,line in enumerate(contents):
-            result = re.search(pattern, line)
-            if result:
-                line_index = idx
-                break
-        if line_index:
-            contents.insert(line_index + 1, text)
-            contents = "".join(contents)
-            f.seek(0)
-            f.write(contents)
-            f.truncate()
-
-def add_text_to_top_of_file(destination_file, text):
-    with open(destination_file, 'r+') as f:
-        contents = f.readlines()
-        contents.insert(0, text)
-        contents = "".join(contents)
-        f.seek(0)
-        f.write(contents)
-        f.truncate()
 
 def render_snippets(appname):
     templateLoader = jinja2.FileSystemLoader(searchpath=appname)
@@ -139,11 +102,11 @@ def add_to_requirements(source_requirements, destination_requirements):
     #TODO Need to make sure that requirements are not duplicated
     copy_contents_of_file(source_requirements, destination_requirements)
 
-def add_test(appname, base_directory, testname, routename):
+def add_test(appname, base_directory, testname, routename, expected_result):
     templateLoader = jinja2.FileSystemLoader(searchpath=base_directory + '/snippets/test')
     templateEnv = jinja2.Environment(loader=templateLoader)
 
     jinja_template = templateEnv.get_template('tests/test_app.py.j2')
 
-    rendered_text = '\n' + jinja_template.render(testname=testname, routename=routename) + '\n'
+    rendered_text = '\n' + jinja_template.render(testname=testname, routename=routename, expected_result=expected_result) + '\n'
     append_text_to_file(appname + '/tests/test_app.py', rendered_text)

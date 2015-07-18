@@ -1,5 +1,5 @@
 from cookiecutter.main import cookiecutter
-from .snippets.snippets import add_database_files, add_route, add_template, add_view, add_blueprint
+from .snippets.snippets import add_database_files, add_route, add_template, add_view, add_blueprint, add_dataview
 from distutils.dir_util import remove_tree
 import click
 import os
@@ -40,7 +40,7 @@ def new(appname, size, database, blueprint, dataview, template, view, api):
 
     if dataview:
         for dataviewname in dataview:
-            add_route(appname, dataviewname, base_directory, 'snippets/dataview')
+            add_dataview(appname, dataviewname, base_directory, 'snippets/dataview')
 
     if template:
         for templatename in template:
