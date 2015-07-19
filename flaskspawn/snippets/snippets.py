@@ -75,20 +75,6 @@ def add_blueprint_file(appname, blueprintname, base_directory):
     rendered_text = jinja_template.render(blueprintname=blueprintname) + '\n'
     append_text_to_file(appname + '/application/__init__.py', rendered_text)
 
-def render_snippets(appname):
-    templateLoader = jinja2.FileSystemLoader(searchpath=appname)
-    templateEnv = jinja2.Environment(loader=templateLoader)
-
-    for template in template_list:
-        jinja_template = templateEnv.get_template(template["name"])
-        f = open(appname + "/" + template["name"],'w')
-        f.write(jinja_template.render(template["values"]))
-        f.close
-
-def add_template_to_be_rendered(template_name, values):
-    template = {"name":template_name, "values":values}
-    template_list.append(template)
-
 def add_config(config, appname):
     for key in config:
         add_text_to_file_after_pattern("    " + key + " = " + config[key] + "\n" , 'class Config\(object\)', appname + '/config.py')

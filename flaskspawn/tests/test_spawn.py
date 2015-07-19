@@ -1,4 +1,4 @@
-from flaskspawn.spawn import new
+from flaskspawn.spawn import new, spawn
 import click
 from click.testing import CliRunner
 import unittest, pytest
@@ -9,8 +9,15 @@ class TestSpawn(unittest.TestCase):
     def setUp(self):
         self.runner = CliRunner()
 
-    def tearDown(self):
-        pass
+    def test_spawn(self):
+        path_to_small = os.getcwd() + "/flaskspawn/cookiecutters/small/{{cookiecutter.repo_name}}"
+        with self.runner.isolated_filesystem():
+            result = self.runner.invoke(spawn, ['new', 'testapp'])
+            assert result.exit_code == 0
+            if not second_dir_has_all_files_of_first(path_to_small, "testapp"):
+                pytest.fail("application created not equal to small template")
+            testappoutput = subprocess.check_output(["py.test"], cwd="testapp")
+            self.assertNotRegexpMatches(testappoutput, "failed")
 
     def test_small_new_default(self):
         path_to_small = os.getcwd() + "/flaskspawn/cookiecutters/small/{{cookiecutter.repo_name}}"
@@ -64,6 +71,17 @@ class TestSpawn(unittest.TestCase):
                 pytest.fail("application created not equal to small template")
             raise_error_if_file_doesnt_exist("testapp/manage.py", "manage.py")
             raise_error_if_file_doesnt_exist("testapp/application/models.py", "manage.py")
+            testappoutput = subprocess.check_output(["py.test"], cwd="testapp")
+            self.assertNotRegexpMatches(testappoutput, "failed")
+
+    def test_small_with_blueprint(self):
+        path_to_small = os.getcwd() + "/flaskspawn/cookiecutters/small/{{cookiecutter.repo_name}}"
+        with self.runner.isolated_filesystem():
+            result = self.runner.invoke(new, ['testapp', "-b", "farewell"])
+            assert result.exit_code == 0
+            if not second_dir_has_all_files_of_first(path_to_small, "testapp"):
+                pytest.fail("application created not equal to small template")
+            raise_error_if_file_doesnt_exist("testapp/application/farewell.py", "farewell.py")
             testappoutput = subprocess.check_output(["py.test"], cwd="testapp")
             self.assertNotRegexpMatches(testappoutput, "failed")
 

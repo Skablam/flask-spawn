@@ -23,7 +23,7 @@ nameofapp
 ├── README.md
 ├── application
 │   ├── __init__.py
-│   ├── routes.py
+│   ├── views.py
 │   ├── static
 │   │   ├── css
 │   │   │   └── base.css
@@ -91,18 +91,18 @@ This option can be used multiple times to create many views:
 spawn new anotherapp -v hello -v login -v logout
 ```
 
-### Add Routes
+### Adding a Data View
 
 If you are building an api then you don't want to render a template, so option
--r or --route adds a route that returns a string.
+-dv or --dataview adds a route that returns a Response class.
 ```
-spawn new anotherapp -r goodbye
+spawn new anotherapp -dv goodbye
 ```
-The above command creates an app called anotherapp and adds a route /goodbye.
+The above command creates an app called anotherapp and adds a view /goodbye.
 
 This option can be used multiple times to create many routes:
 ```
-spawn new anotherapp -r goodbye -r ciao -r adios
+spawn new anotherapp -dv goodbye -dv ciao -dv adios
 ```
 
 ### Add Templates

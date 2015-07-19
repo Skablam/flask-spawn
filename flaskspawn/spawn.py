@@ -15,9 +15,8 @@ def spawn():
 @click.option('-dv', '--dataview', multiple=True, help="use to add a view that returns a Response rather than a template")
 @click.option('-t', '--template', multiple=True)
 @click.option('-v', '--view', multiple=True)
-@click.option('-a', '--api', is_flag=True, help="Use if you are building an api. It removes the templates folder")
 @click.argument('appname', required=True)
-def new(appname, size, database, blueprint, dataview, template, view, api):
+def new(appname, size, database, blueprint, dataview, template, view):
     base_directory = os.path.dirname(os.path.abspath(__file__))
 
     if size == 'small':
@@ -26,10 +25,6 @@ def new(appname, size, database, blueprint, dataview, template, view, api):
     cookiecutter(cookiecutter_path,
                  no_input=True,
                  extra_context={'repo_name': '{0}'.format(appname)})
-
-    #Need to remove templates folder as not needed in api app
-    if api:
-        remove_tree(appname + '/application/templates')
 
     if database:
         add_database_files(appname, base_directory)

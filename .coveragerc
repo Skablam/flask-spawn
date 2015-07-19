@@ -1,2 +1,2 @@
 [report]
-omit = "flaskspawn/cookiecutters*"
+omit = *cookiecutters*
