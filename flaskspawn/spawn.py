@@ -1,6 +1,5 @@
 from cookiecutter.main import cookiecutter
-from .snippets.snippets import add_database_files, add_route, add_template, add_view, add_blueprint, add_dataview
-from distutils.dir_util import remove_tree
+from .snippets.snippets import add_database_files, add_template, add_view, add_blueprint, add_dataview
 import click
 import os
 

@@ -1,13 +1,10 @@
 from shutil import copyfile
-from distutils.dir_util import copy_tree
 import jinja2
-import os
 from .file_routines import append_to_file, append_text_to_file, add_text_to_file_after_pattern, copy_contents_of_file, add_text_to_top_of_file
 
 template_list = []
 
 def add_database_files(appname, base_directory):
-    #TODO Make this method idempotent
     database_directory = '{0}/snippets/database/'.format(base_directory)
 
     copyfile(database_directory + 'application/models.py', appname + '/application/models.py')
@@ -24,9 +21,8 @@ def add_route(appname, routename, base_directory, template_folder):
     templateEnv = jinja2.Environment(loader=templateLoader)
 
     jinja_template = templateEnv.get_template('application/views.py.j2')
-    f = open(appname + '/application/views.py','a')
-    f.write("\n" + jinja_template.render(routename=routename) + "\n")
-    f.close
+    with open(appname + '/application/views.py', 'a') as f:
+        f.write("\n" + jinja_template.render(routename=routename) + "\n")
 
 def add_dataview(appname, dataviewname, base_directory, template_folder):
     add_import({appname + '/application/views.py':"from flask import Response\n"})
@@ -38,9 +34,8 @@ def add_template(appname, templatename, base_directory):
     templateEnv = jinja2.Environment(loader=templateLoader)
 
     jinja_template = templateEnv.get_template('application/templates/sample_template.html')
-    f = open(appname + '/application/templates/' + templatename + '.html','w')
-    f.write("\n" + jinja_template.render(templatename=templatename) + "\n")
-    f.close
+    with open(appname + '/application/templates/' + templatename + '.html', 'w') as f:
+        f.write("\n" + jinja_template.render(templatename=templatename) + "\n")
 
 def add_view(appname, viewname, base_directory):
     add_route(appname, viewname, base_directory, 'snippets/view')
@@ -51,8 +46,6 @@ def add_view(appname, viewname, base_directory):
 def add_blueprint(appname, blueprintname, base_directory, size):
     if size == "small":
         add_blueprint_small(appname, blueprintname, base_directory)
-    #os.makedirs(appname + 'application/' + blueprintname)
-    #copy_tree(base_directory + 'snippets/blueprint', appname + 'application/' + blueprintname)
 
 def add_blueprint_small(appname, blueprintname, base_directory):
     add_blueprint_file(appname, blueprintname, base_directory)
@@ -64,9 +57,8 @@ def add_blueprint_file(appname, blueprintname, base_directory):
     templateEnv = jinja2.Environment(loader=templateLoader)
 
     jinja_template = templateEnv.get_template('application/blueprint.py.j2')
-    f = open(appname + '/application/' + blueprintname + '.py','w')
-    f.write("\n" + jinja_template.render(blueprintname=blueprintname) + "\n")
-    f.close
+    with open(appname + '/application/' + blueprintname + '.py', 'w') as f:
+        f.write("\n" + jinja_template.render(blueprintname=blueprintname) + "\n")
 
     import_directory = appname + '/application/__init__.py'
     add_import({import_directory:"from " + blueprintname + " import " + blueprintname + "\n"})
@@ -77,15 +69,15 @@ def add_blueprint_file(appname, blueprintname, base_directory):
 
 def add_config(config, appname):
     for key in config:
-        add_text_to_file_after_pattern("    " + key + " = " + config[key] + "\n" , 'class Config\(object\)', appname + '/config.py')
+        add_text_to_file_after_pattern("    " + key + " = " + config[key] + "\n", 'class Config\\(object\\)', appname + '/config.py')
 
 def add_import(imports):
     for key in imports:
         if not imports[key] in open(key).read():
             add_text_to_top_of_file(key, imports[key])
+            print "fff"
 
 def add_to_requirements(source_requirements, destination_requirements):
-    #TODO Need to make sure that requirements are not duplicated
     copy_contents_of_file(source_requirements, destination_requirements)
 
 def add_test(appname, base_directory, testname, routename, expected_result):

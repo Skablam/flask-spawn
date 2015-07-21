@@ -22,7 +22,7 @@ def add_text_to_file_after_pattern(text, pattern, destination_file):
     with open(destination_file, 'r+') as f:
         contents = f.readlines()
         line_index = None
-        for idx,line in enumerate(contents):
+        for idx, line in enumerate(contents):
             result = re.search(pattern, line)
             if result:
                 line_index = idx

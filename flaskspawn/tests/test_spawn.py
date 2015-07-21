@@ -1,8 +1,7 @@
 from flaskspawn.spawn import new, spawn
-import click
 from click.testing import CliRunner
 import unittest, pytest
-import os, os.path, sys, subprocess, filecmp
+import os, subprocess, filecmp
 
 class TestSpawn(unittest.TestCase):
 
@@ -87,7 +86,7 @@ class TestSpawn(unittest.TestCase):
 
 def second_dir_has_all_files_of_first(dir1, dir2):
     dirs_cmp = filecmp.dircmp(dir1, dir2)
-    if len(dirs_cmp.left_only)>0:
+    if len(dirs_cmp.left_only) > 0:
         return False
     for common_dir in dirs_cmp.common_dirs:
         new_dir1 = os.path.join(dir1, common_dir)
