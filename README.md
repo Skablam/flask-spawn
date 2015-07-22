@@ -117,3 +117,16 @@ This option can also be used multiple times:
 ```
 spawn new anotherapp -t hithere -t how -t are -t you
 ```
+
+### Add blueprintname
+
+The option -b or --blueprint adds a module that contains a flask blueprint.
+```
+spawn new anotherapp -b hello
+```
+The above command creates a file called hello.py that contains the blueprint with one view. The blueprint is registered in the application/__init__.py with a url_prefix of /hello.
+
+This option can also be used multiple times:
+```
+spawn new anotherapp -b black -b white -b blue -b green
+```
