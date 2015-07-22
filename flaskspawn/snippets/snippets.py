@@ -61,7 +61,7 @@ def add_blueprint_file(appname, blueprintname, base_directory):
         f.write("\n" + jinja_template.render(blueprintname=blueprintname) + "\n")
 
     import_directory = appname + '/application/__init__.py'
-    add_import({import_directory:"from " + blueprintname + " import " + blueprintname + "\n"})
+    add_import({import_directory:"from ." + blueprintname + " import " + blueprintname + "\n"})
 
     jinja_template = templateEnv.get_template('application/__init__.py')
     rendered_text = jinja_template.render(blueprintname=blueprintname) + '\n'
@@ -75,7 +75,6 @@ def add_import(imports):
     for key in imports:
         if not imports[key] in open(key).read():
             add_text_to_top_of_file(key, imports[key])
-            print "fff"
 
 def add_to_requirements(source_requirements, destination_requirements):
     copy_contents_of_file(source_requirements, destination_requirements)

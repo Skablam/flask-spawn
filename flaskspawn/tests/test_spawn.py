@@ -2,6 +2,7 @@ from flaskspawn.spawn import new, spawn
 from click.testing import CliRunner
 import unittest, pytest
 import os, subprocess, filecmp
+import re
 
 class TestSpawn(unittest.TestCase):
 
@@ -16,7 +17,8 @@ class TestSpawn(unittest.TestCase):
             if not second_dir_has_all_files_of_first(path_to_small, "testapp"):
                 pytest.fail("application created not equal to small template")
             testappoutput = subprocess.check_output(["py.test"], cwd="testapp")
-            self.assertNotRegexpMatches(testappoutput, "failed")
+            if re.search(b'failed', testappoutput):
+                pytest.fail("app unit tests failed")
 
     def test_small_new_default(self):
         path_to_small = os.getcwd() + "/flaskspawn/cookiecutters/small/{{cookiecutter.repo_name}}"
@@ -26,7 +28,8 @@ class TestSpawn(unittest.TestCase):
             if not second_dir_has_all_files_of_first(path_to_small, "testapp"):
                 pytest.fail("application created not equal to small template")
             testappoutput = subprocess.check_output(["py.test"], cwd="testapp")
-            self.assertNotRegexpMatches(testappoutput, "failed")
+            if re.search(b'failed', testappoutput):
+                pytest.fail("app unit tests failed")
 
     def test_small_new_view(self):
         path_to_small = os.getcwd() + "/flaskspawn/cookiecutters/small/{{cookiecutter.repo_name}}"
@@ -38,7 +41,8 @@ class TestSpawn(unittest.TestCase):
             if not os.path.exists("testapp/application/templates/hello.html"):
                 pytest.fail("template hello.html not created")
             testappoutput = subprocess.check_output(["py.test"], cwd="testapp")
-            self.assertNotRegexpMatches(testappoutput, "failed")
+            if re.search(b'failed', testappoutput):
+                pytest.fail("app unit tests failed")
 
     def test_small_new_dataview(self):
         path_to_small = os.getcwd() + "/flaskspawn/cookiecutters/small/{{cookiecutter.repo_name}}"
@@ -48,7 +52,8 @@ class TestSpawn(unittest.TestCase):
             if not second_dir_has_all_files_of_first(path_to_small, "testapp"):
                 pytest.fail("application created not equal to small template")
             testappoutput = subprocess.check_output(["py.test"], cwd="testapp")
-            self.assertNotRegexpMatches(testappoutput, "failed")
+            if re.search(b'failed', testappoutput):
+                pytest.fail("app unit tests failed")
 
     def test_small_new_template(self):
         path_to_small = os.getcwd() + "/flaskspawn/cookiecutters/small/{{cookiecutter.repo_name}}"
@@ -59,7 +64,8 @@ class TestSpawn(unittest.TestCase):
                 pytest.fail("application created not equal to small template")
             raise_error_if_file_doesnt_exist("testapp/application/templates/hello.html", "hello.html")
             testappoutput = subprocess.check_output(["py.test"], cwd="testapp")
-            self.assertNotRegexpMatches(testappoutput, "failed")
+            if re.search(b'failed', testappoutput):
+                pytest.fail("app unit tests failed")
 
     def test_small_with_database(self):
         path_to_small = os.getcwd() + "/flaskspawn/cookiecutters/small/{{cookiecutter.repo_name}}"
@@ -71,7 +77,8 @@ class TestSpawn(unittest.TestCase):
             raise_error_if_file_doesnt_exist("testapp/manage.py", "manage.py")
             raise_error_if_file_doesnt_exist("testapp/application/models.py", "manage.py")
             testappoutput = subprocess.check_output(["py.test"], cwd="testapp")
-            self.assertNotRegexpMatches(testappoutput, "failed")
+            if re.search(b'failed', testappoutput):
+                pytest.fail("app unit tests failed")
 
     def test_small_with_blueprint(self):
         path_to_small = os.getcwd() + "/flaskspawn/cookiecutters/small/{{cookiecutter.repo_name}}"
@@ -82,7 +89,8 @@ class TestSpawn(unittest.TestCase):
                 pytest.fail("application created not equal to small template")
             raise_error_if_file_doesnt_exist("testapp/application/farewell.py", "farewell.py")
             testappoutput = subprocess.check_output(["py.test"], cwd="testapp")
-            self.assertNotRegexpMatches(testappoutput, "failed")
+            if re.search(b'failed', testappoutput):
+                pytest.fail("app unit tests failed")
 
 def second_dir_has_all_files_of_first(dir1, dir2):
     dirs_cmp = filecmp.dircmp(dir1, dir2)
