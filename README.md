@@ -120,7 +120,7 @@ This option can also be used multiple times:
 spawn new anotherapp -t hithere -t how -t are -t you
 ```
 
-### Add blueprintname
+### Add Blueprint
 
 The option -b or --blueprint adds a module that contains a flask blueprint.
 ```
