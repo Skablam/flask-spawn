@@ -90,6 +90,7 @@ This option can be used multiple times to create many views:
 ```
 spawn new anotherapp -v hello -v login -v logout
 ```
+A unit test is added to tests/test_app.py for this view.
 
 ### Adding a Data View
 
@@ -104,6 +105,7 @@ This option can be used multiple times to create many routes:
 ```
 spawn new anotherapp -dv goodbye -dv ciao -dv adios
 ```
+A unit test is added to tests/test_app.py for this data view.
 
 ### Add Templates
 
@@ -130,3 +132,4 @@ This option can also be used multiple times:
 ```
 spawn new anotherapp -b black -b white -b blue -b green
 ```
+A unit test is added to tests/test_app.py for this blueprint.
