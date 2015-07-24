@@ -1,4 +1,4 @@
-# flask-spawn
+# Flask Spawn
 Generate new flask applications quickly and easily, in a variety of customisable structures.
 
 
