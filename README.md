@@ -1,6 +1,7 @@
 # Flask Spawn
 Generate new flask applications quickly and easily, in a variety of customisable structures.
 
+Supports python 2.7 and 3.4 on OSX and Windows.
 
 ## Quickstart
 
