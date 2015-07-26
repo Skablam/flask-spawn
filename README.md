@@ -47,7 +47,7 @@ Then install python libraries (it is recommnded that you do this inside a virtua
 ```
 pip install -r requirements.txt
 ```
-Then your app is good to go. Run with:
+Then your app is good to go. Run the app with:
 
 ```
 source run.sh
